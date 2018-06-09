@@ -1,0 +1,73 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: url_service
+  namespace: test-env
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        name: url_service
+    spec:
+      containers:
+          - name: url_service
+            image: "192.168.13.135:5000/urllookup:latest"
+            #volumeMounts:
+              #- name: config-volume
+                #mountPath: /additional
+            ports:
+              - containerPort: 8080
+            resources:
+                  limits:
+                     cpu: 1
+                  requests:
+                     cpu: 800m
+      livenessProbe:
+       httpGet:
+        # when "host" is not defined, "PodIP" will be used
+        # host: my-host
+        # when "scheme" is not defined, "HTTP" scheme will be used. Only "HTTP" and "HTTPS" are allowed
+         scheme: HTTPS
+        path: /swagger-ui.html
+        #port: 8080
+      initialDelaySeconds: 15
+      timeoutSeconds: 1
+      #volumes:
+        #- name: config-volume
+          #hostPath:
+            #path: /home/configmap/volume
+            #type: DirectoryOrCreate
+          #configMap:
+             #name: urlconfig
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: url_service
+  namespace: test-env 
+spec:
+  type: NodePort
+  selector:
+    name: url_service
+  ports:
+    - port: 80
+      targetPort: 8080
+
+---
+
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: scaler
+  namespace: test-env
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1beta1
+    kind: Deployment
+    name: url_service
+  minReplicas: 1
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 70                     

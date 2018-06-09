@@ -1,0 +1,145 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>URLLookUpService</groupId>
+  <artifactId>URLLookUpService</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>URLLookUpService</name>
+  
+  
+  <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <!-- tag::plugin[] -->
+            
+            <plugin>
+    			<groupId>org.apache.maven.plugins</groupId>
+    			<artifactId>maven-surefire-plugin</artifactId>
+    			<version>2.19.1</version>
+    				<configuration>
+        				<testFailureIgnore>true</testFailureIgnore>
+    				</configuration>
+			</plugin>
+                      
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.4.11</version>
+                <configuration>
+                    <imageName>urllookup</imageName>
+                    <dockerDirectory>src/main/docker</dockerDirectory>
+                    <resources>
+                        <resource>
+                            <targetPath>/</targetPath>
+                            <directory>${project.build.directory}</directory>
+                            <include>${project.build.finalName}.jar</include>
+                        </resource>
+                    </resources>
+                </configuration>
+            </plugin>
+            <!-- end::plugin[] -->
+        </plugins>
+    </build>
+  
+  <dependencies>
+		  <dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-web</artifactId>
+		    <version>1.5.7.RELEASE</version> 
+		 </dependency>
+		 <dependency>
+			    <groupId>org.springframework.boot</groupId>
+			    <artifactId>spring-boot-autoconfigure</artifactId>
+			    <version>2.0.2.RELEASE</version>
+        </dependency>
+		 <dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-devtools</artifactId>
+		    <version>1.5.7.RELEASE</version>
+		    <scope>runtime</scope>
+		 </dependency>
+		 <dependency>
+		    <groupId>org.hibernate.javax.persistence</groupId>
+		    <artifactId>hibernate-jpa-2.1-api</artifactId>
+		    <version>1.0.0.Final</version>
+         </dependency>
+         <dependency>
+			    <groupId>org.springframework.boot</groupId>
+			    <artifactId>spring-boot-starter-data-jpa</artifactId>
+			    <version>2.0.2.RELEASE</version>
+         </dependency>
+         
+		 <dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-test</artifactId>
+		    <version>1.5.7.RELEASE</version>
+		    <scope>test</scope>
+		 </dependency>
+         <dependency>
+		    <groupId>com.h2database</groupId>
+		    <artifactId>h2</artifactId>
+		    <scope>runtime</scope>
+		    <version>1.4.197</version>
+		</dependency>
+        <dependency>
+			    <groupId>org.springframework.data</groupId>
+			    <artifactId>spring-data-commons-core</artifactId>
+			    <version>1.0.0.RELEASE</version>
+        </dependency>
+        
+        
+         <dependency>
+		    <groupId>com.fasterxml.jackson.core</groupId>
+		    <artifactId>jackson-databind</artifactId>
+		    <version>2.9.5</version>
+		</dependency>
+		
+			<!-- 	<dependency>
+			Setup Spring Data JPA Repository support
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency> -->
+		<!-- Jackson higher version start -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.7.4</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.fasterxml.jackson.core</groupId>
+					<artifactId>jackson-core</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.fasterxml.jackson.core</groupId>
+					<artifactId>jackson-annotations</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+			<version>2.7.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+			<version>2.7.4</version>
+		</dependency>
+		<dependency>
+		<!-- Jackson version  -->
+			<!-- In-memory database for testing/demos -->
+			<groupId>org.hsqldb</groupId>
+			<artifactId>hsqldb</artifactId>
+			<version>2.0.0</version>
+		</dependency>
+		
+            
+      
+		
+  </dependencies>
+  
+  
+</project>
